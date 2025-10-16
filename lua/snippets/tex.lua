@@ -1,10 +1,10 @@
 local ls = require("luasnip")
-local s = ls.snippet
-local t = ls.text_node
-local i = ls.insert_node
-local fmt = require("luasnip.extras.fmt").fmt
-local fmta = require("luasnip.extras.fmt").fmta
-local f = ls.function_node
+-- local s = ls.snippet
+-- local t = ls.text_node
+-- local i = ls.insert_node
+-- local fmt = require("luasnip.extras.fmt").fmt
+-- local fmta = require("luasnip.extras.fmt").fmta
+-- local f = ls.function_node
 
 -- Conditions
 local function in_math()
@@ -37,7 +37,22 @@ local function SELECTED(_, snip)
 end
 
 return {
+  -- BEGIN logic
+  ls.parser.parse_snippet({ trig = "lor", snippetType = "autosnippet", condition = in_math }, [[\lor $1]]),
+  ls.parser.parse_snippet({ trig = "land", snippetType = "autosnippet", condition = in_math }, [[\land $1]]),
+  -- END logic
+  ls.parser.parse_snippet(
+    { trig = "emphh", dscr = "\\emph{}", snippetType = "autosnippet", condition = in_text },
+    [[\emph{$1} $0]]
+  ),
+  -- END text
   -- BEGIN environments
+  ls.parser.parse_snippet(
+    { trig = "proof", dscr = "begin{proof} / end{proof}", snippetType = "autosnippet", condition = line_begin },
+    [[\\begin{proof}
+    $1
+\\end{proof}]]
+  ),
   ls.parser.parse_snippet(
     { trig = "beg", dscr = "begin{} / end{}", snippetType = "autosnippet", condition = line_begin },
     [[\\begin{$1}
@@ -54,15 +69,44 @@ return {
     { trig = "exr", dscr = "begin{exercise} / end{exercise}", snippetType = "autosnippet", condition = line_begin },
     [[\\begin{exercise}
 	$1
-\\end{exercise}$0]]
+\\end{exercise}
+$0]]
   ),
   ls.parser.parse_snippet(
     { trig = "thm", dscr = "begin{theorem} / end{theorem}", snippetType = "autosnippet", condition = line_begin },
-    [[\\begin{theorem}[$2]
-	$1
+    [[\\begin{theorem}[$1]
+	$2
 \\end{theorem}$0]]
   ),
+  ls.parser.parse_snippet(
+    { trig = "insg", dscr = "begin{inisight} / end{insight}", snippetType = "autosnippet", condition = line_begin },
+    [[\\begin{insight}[$1]
+	$2
+\\end{insight}$0]]
+  ),
   -- END environments
+  -- BEGIN highlight
+  ls.parser.parse_snippet(
+    { trig = "yhl", dscr = "highlight yellow", snippetType = "autosnippet", condition = in_text },
+    [[\ihlyellow{${1}}$0]]
+  ),
+  ls.parser.parse_snippet(
+    { trig = "rhl", dscr = "highlight yellow", snippetType = "autosnippet", condition = in_text },
+    [[\ihlred{${1}}$0]]
+  ),
+  ls.parser.parse_snippet(
+    { trig = "bhl", dscr = "highlight yellow", snippetType = "autosnippet", condition = in_text },
+    [[\ihlblue{${1}}$0]]
+  ),
+  -- END highlight
+  ls.parser.parse_snippet(
+    { trig = "ee", dscr = "epislon", wordTrig = false, snippetType = "autosnippet", condition = in_math },
+    [[\epsilon ]]
+  ),
+  ls.parser.parse_snippet(
+    { trig = "(", dscr = "()", wordTrig = false, snippetType = "autosnippet", condition = in_math },
+    [[($1)$0]]
+  ),
   ls.parser.parse_snippet({ trig = "...", dscr = "ldots", wordTrig = false, snippetType = "autosnippet" }, [[\ldots]]),
   ls.parser.parse_snippet(
     { trig = "table", dscr = "Table environment", condition = line_begin },
@@ -91,6 +135,12 @@ return {
 \end{enumerate}]]
   ),
   ls.parser.parse_snippet(
+    { trig = "aenum", dscr = "Enumerate", snippetType = "autosnippet", condition = line_begin },
+    [[\begin{enumerate}{\alpha*)}
+	\item $0
+\end{enumerate}]]
+  ),
+  ls.parser.parse_snippet(
     { trig = "item", dscr = "Itemize", snippetType = "autosnippet", condition = line_begin },
     [[\begin{itemize}
 	\item $0
@@ -101,10 +151,6 @@ return {
     [[\begin{description}
 	\item[$1] $0
 \end{description}]]
-  ),
-  ls.parser.parse_snippet(
-    { trig = "pac", dscr = "Package", condition = line_begin },
-    [[\usepackage[${1:options}]{${2:package}}$0]]
   ),
   ls.parser.parse_snippet(
     { trig = "=>", dscr = "implies", wordTrig = false, snippetType = "autosnippet" },
@@ -119,19 +165,18 @@ return {
     [[\iff]]
   ),
   ls.parser.parse_snippet(
-    { trig = "mk", dscr = "Math", snippetType = "autosnippet", condition = in_math },
+    { trig = "mk", dscr = "Math", snippetType = "autosnippet", condition = in_text },
     [[$${1}$ $2]]
   ),
   ls.parser.parse_snippet(
-    { trig = "dm", dscr = "Math", snippetType = "autosnippet", condition = in_math },
+    { trig = "dm", dscr = "Math", snippetType = "autosnippet", condition = in_text },
     [[\[
-${1:${VISUAL}}
-.\] $0]]
+    $1
+\] $0]]
   ),
   ls.parser.parse_snippet(
     { trig = "ali", dscr = "Align", snippetType = "autosnippet", condition = both(in_math, line_begin) },
     [[\begin{align*}
-	${1:${VISUAL}}
 .\end{align*}]]
   ),
   ls.parser.parse_snippet(
@@ -167,10 +212,6 @@ ${1:${VISUAL}}
     snippetType = "autosnippet",
     condition = in_math,
   }, [[ _{ }]]),
-  ls.parser.parse_snippet({ trig = "sympy", dscr = "sympyblock ", condition = in_math }, [[sympy $1 sympy$0]]),
-  ls.parser.parse_snippet({ trig = "'sympy(.*)sympy'", dscr = "sympy", regTrig = true, condition = in_math }, [[ ]]),
-  ls.parser.parse_snippet({ trig = "math", dscr = "mathematicablock", condition = in_math }, [[math $1 math$0]]),
-  ls.parser.parse_snippet({ trig = "'math(.*)math'", dscr = "math", regTrig = true, condition = in_math }, [[ ]]),
   ls.parser.parse_snippet(
     { trig = "==", dscr = "equals", wordTrig = false, snippetType = "autosnippet", condition = in_math },
     [[&= $1 \\\\]]
@@ -196,36 +237,20 @@ ${1:${VISUAL}}
     [[\begin{bmatrix} $1 \end{bmatrix} $0]]
   ),
   ls.parser.parse_snippet(
-    { trig = "()", dscr = "left( right)", wordTrig = false, snippetType = "autosnippet", condition = in_math },
-    [[\left( ${1:${VISUAL}} \right) $0]]
-  ),
-  ls.parser.parse_snippet(
     { trig = "lr", dscr = "left( right)", wordTrig = false, condition = in_math },
-    [[\left( ${1:${VISUAL}} \right) $0]]
-  ),
-  ls.parser.parse_snippet(
-    { trig = "lr(", dscr = "left( right)", wordTrig = false, condition = in_math },
-    [[\left( ${1:${VISUAL}} \right) $0]]
-  ),
-  ls.parser.parse_snippet(
-    { trig = "lr|", dscr = "left| right|", wordTrig = false, condition = in_math },
-    [[\left| ${1:${VISUAL}} \right| $0]]
+    [[\left( $1 \right) $0]]
   ),
   ls.parser.parse_snippet(
     { trig = "lr{", dscr = "left\\{ right\\}", wordTrig = false, condition = in_math },
-    [[\left\\{ ${1:${VISUAL}} \right\\} $0]]
-  ),
-  ls.parser.parse_snippet(
-    { trig = "lrb", dscr = "left\\{ right\\}", wordTrig = false, condition = in_math },
-    [[\left\\{ ${1:${VISUAL}} \right\\} $0]]
+    [[\left\\{ $1 \right\\} $0]]
   ),
   ls.parser.parse_snippet(
     { trig = "lr[", dscr = "left[ right]", wordTrig = false, condition = in_math },
-    [[\left[ ${1:${VISUAL}} \right] $0]]
+    [[\left[ $1 \right] $0]]
   ),
   ls.parser.parse_snippet(
     { trig = "lra", dscr = "leftangle rightangle", wordTrig = false, snippetType = "autosnippet", condition = in_math },
-    [[\left<${1:${VISUAL}} \right>$0]]
+    [[\left<$1 \right>$0]]
   ),
   ls.parser.parse_snippet(
     { trig = "conj", dscr = "conjugate", wordTrig = false, snippetType = "autosnippet", condition = in_math },
@@ -254,7 +279,7 @@ ${1:${VISUAL}}
   ),
   ls.parser.parse_snippet(
     { trig = "sq", dscr = "\\sqrt{}", wordTrig = false, snippetType = "autosnippet", condition = in_math },
-    [[\sqrt{${1:${VISUAL}}} $0]]
+    [[\sqrt{$1} $0]]
   ),
   ls.parser.parse_snippet(
     { trig = "sr", dscr = "^2", wordTrig = false, snippetType = "autosnippet", condition = in_math },
@@ -443,6 +468,10 @@ $0]]
   ls.parser.parse_snippet(
     { trig = "||", dscr = "mid", wordTrig = false, snippetType = "autosnippet", condition = in_math },
     [[ \mid ]]
+  ),
+  ls.parser.parse_snippet(
+    { trig = "cq", dscr = "subset", wordTrig = false, snippetType = "autosnippet", condition = in_math },
+    [[\subseteq ]]
   ),
   ls.parser.parse_snippet(
     { trig = "cc", dscr = "subset", wordTrig = false, snippetType = "autosnippet", condition = in_math },

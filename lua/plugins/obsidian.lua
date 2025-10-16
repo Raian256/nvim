@@ -8,10 +8,10 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {
       workspaces = {
-        -- {
-        --   name = "Common",
-        --   path = "~/Nextcloud/Obsidian",  -- <-- change to your vault
-        -- },
+        {
+          name = "Study Journal",
+          path = "~/Documents/Obsidian/StudyJournal", -- <-- change to your vault
+        },
       },
 
       -- Daily notes (optional)
