@@ -73,6 +73,20 @@ return {
 $0]]
   ),
   ls.parser.parse_snippet(
+    { trig = "prop", snippetType = "autosnippet", condition = line_begin },
+    [[\\begin{proposition}
+	$1
+\\end{proposition}
+$0]]
+  ),
+  ls.parser.parse_snippet(
+    { trig = "exm", snippetType = "autosnippet", condition = line_begin },
+    [[\\begin{example}
+	$1
+\\end{example}
+$0]]
+  ),
+  ls.parser.parse_snippet(
     { trig = "thm", dscr = "begin{theorem} / end{theorem}", snippetType = "autosnippet", condition = line_begin },
     [[\\begin{theorem}[$1]
 	$2
@@ -83,6 +97,17 @@ $0]]
     [[\\begin{insight}[$1]
 	$2
 \\end{insight}$0]]
+  ),
+  ls.parser.parse_snippet(
+    { trig = "def", snippetType = "autosnippet", condition = line_begin },
+    [[\\begin{definition}[$1]
+	$2
+\\end{definition}$0]]
+  ),
+  ls.parser.parse_snippet(
+    { trig = "lemma", dscr = "begin{lemma} / end{lemma}", snippetType = "autosnippet", condition = line_begin },
+    [[\\begin{lemma}[$1]
+	$\end{lemma}$0]]
   ),
   -- END environments
   -- BEGIN highlight
@@ -405,7 +430,15 @@ $0]]
   ),
   ls.parser.parse_snippet(
     { trig = "norm", dscr = "norm", wordTrig = false, snippetType = "autosnippet", condition = in_math },
-    [[\|$1\|$0]]
+    [[\norm{$1}$0]]
+  ),
+  ls.parser.parse_snippet(
+    { trig = "ip", dscr = "inner product", wordTrig = false, snippetType = "autosnippet", condition = in_math },
+    [[\ip{$1}$0]]
+  ),
+  ls.parser.parse_snippet(
+    { trig = ":=", wordTrig = false, snippetType = "autosnippet", condition = in_math },
+    [[\coloneqq]]
   ),
   ls.parser.parse_snippet({
     trig = "'(?<!\\\\)(sin|cos|arccot|cot|csc|ln|log|exp|star|perp)'",

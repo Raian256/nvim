@@ -11,7 +11,16 @@ return {
         out_dir = "build", -- map to latexmk $out_dir
         continuous = 1,
         callback = 1,
-        options = { "-file-line-error", "-synctex=1", "-interaction=nonstopmode" },
+        options = {
+          "-lualatex",
+          "-file-line-error",
+          "-synctex=1",
+          "-interaction=nonstopmode",
+          -- reduce time of compilation when errors are found
+          "-file-line-error",
+          "-halt-on-error",
+          "-recorder",
+        },
       }
       vim.g.vimtex_view_use_temp_files = 0
       -- Hide badbox noise in VimTeX quickfix
