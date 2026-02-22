@@ -5,6 +5,9 @@ return {
     init = function()
       vim.g.vimtex_view_method = "sioyek"
       vim.g.vimtex_compiler_method = "latexmk"
+      vim.g.vimtex_compiler_latexmk_engines = {
+        _ = "-pdflua", -- default for all projects
+      }
       vim.g.vimtex_view_use_temp_files = 0
       vim.g.vimtex_compiler_latexmk = {
         aux_dir = "build", -- map to latexmk $aux_dir
@@ -12,8 +15,6 @@ return {
         continuous = 1,
         callback = 1,
         options = {
-          "-lualatex",
-          "-file-line-error",
           "-synctex=1",
           "-interaction=nonstopmode",
           -- reduce time of compilation when errors are found
