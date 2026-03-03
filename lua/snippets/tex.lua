@@ -105,9 +105,10 @@ $0]]
 \\end{definition}$0]]
   ),
   ls.parser.parse_snippet(
-    { trig = "lemma", dscr = "begin{lemma} / end{lemma}", snippetType = "autosnippet", condition = line_begin },
+    { trig = "lemma", snippetType = "autosnippet", condition = line_begin },
     [[\\begin{lemma}[$1]
-	$\end{lemma}$0]]
+	$2
+\\end{lemma}$0]]
   ),
   -- END environments
   -- BEGIN highlight
@@ -128,10 +129,10 @@ $0]]
     { trig = "ee", dscr = "epislon", wordTrig = false, snippetType = "autosnippet", condition = in_math },
     [[\epsilon ]]
   ),
-  ls.parser.parse_snippet(
-    { trig = "(", dscr = "()", wordTrig = false, snippetType = "autosnippet", condition = in_math },
-    [[($1)$0]]
-  ),
+  --ls.parser.parse_snippet(
+  --  { trig = "(", dscr = "()", wordTrig = false, snippetType = "autosnippet", condition = in_math },
+  --  [[($1)$0]]
+  --),
   ls.parser.parse_snippet({ trig = "...", dscr = "ldots", wordTrig = false, snippetType = "autosnippet" }, [[\ldots]]),
   ls.parser.parse_snippet(
     { trig = "table", dscr = "Table environment", condition = line_begin },
@@ -335,12 +336,12 @@ $0]]
     [[(${1:x}_${2:n})_{${3:$2}\\in${4:\\N}}$0]]
   ),
   ls.parser.parse_snippet(
-    { trig = "<=", dscr = "leq", wordTrig = false, snippetType = "autosnippet", condition = in_math },
-    [[\le ]]
+    { trig = "leq", dscr = "leq", wordTrig = false, snippetType = "autosnippet", condition = in_math },
+    [[\leq ]]
   ),
   ls.parser.parse_snippet(
-    { trig = ">=", dscr = "geq", wordTrig = false, snippetType = "autosnippet", condition = in_math },
-    [[\ge ]]
+    { trig = "geq", dscr = "geq", wordTrig = false, snippetType = "autosnippet", condition = in_math },
+    [[\geq ]]
   ),
   ls.parser.parse_snippet(
     { trig = "EE", dscr = "geq", wordTrig = false, snippetType = "autosnippet", condition = in_math },
