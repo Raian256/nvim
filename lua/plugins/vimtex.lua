@@ -8,7 +8,7 @@ return {
       vim.g.vimtex_compiler_latexmk_engines = {
         _ = "-pdflua", -- default for all projects
       }
-      vim.g.vimtex_view_use_temp_files = 0
+      vim.g.vimtex_view_use_temp_files = 2
       vim.g.vimtex_compiler_latexmk = {
         aux_dir = "build", -- map to latexmk $aux_dir
         out_dir = "build", -- map to latexmk $out_dir
@@ -23,7 +23,6 @@ return {
           "-recorder",
         },
       }
-      vim.g.vimtex_view_use_temp_files = 0
       -- Hide badbox noise in VimTeX quickfix
       vim.g.vimtex_quickfix_ignore_filters = {
         [[Overfull \\hbox]],
