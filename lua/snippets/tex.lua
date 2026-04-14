@@ -320,10 +320,6 @@ $0]]
     [[^{$1}$0]]
   ),
   ls.parser.parse_snippet(
-    { trig = "rd", dscr = "to the ... power", wordTrig = false, snippetType = "autosnippet", condition = in_math },
-    [[^{($1)}$0]]
-  ),
-  ls.parser.parse_snippet(
     { trig = "__", dscr = "subscript", wordTrig = false, snippetType = "autosnippet", condition = in_math },
     [[_{$1}$0]]
   ),
